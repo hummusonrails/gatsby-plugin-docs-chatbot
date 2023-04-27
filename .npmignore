@@ -1,0 +1,21 @@
+# Ignore development and configuration files
+node_modules/
+*.log
+*.lock
+*.json
+*.yml
+*.yaml
+
+# Ignore Git-related files
+.git/
+.gitignore
+
+# Ignore test files and directories
+__tests__/
+*.test.js
+*.spec.js
+
+# Ignore documentation files
+README.md
+LICENSE
+CHANGELOG.md
