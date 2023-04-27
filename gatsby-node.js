@@ -53,7 +53,6 @@ exports.createPages = async ({ actions, graphql }, pluginOptions) => {
       .map((file) => ({ id: file.sha, title: file.name, url: file.html_url }));
   });
   
-  console.log('Waiting for all githubDataPromises to resolve');
   const githubData = await Promise.all(githubDataPromises);
 
   // Combine the data from markdown files and GitHub repositories
