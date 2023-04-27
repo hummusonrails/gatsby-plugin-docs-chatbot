@@ -35,6 +35,12 @@ It is built with the following:
 },
 ```
 
+3. Add your `OPENAI_API_KEY` to your `.env.development` file:
+
+```
+OPENAI_API_KEY=YOUR_API_KEY
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
