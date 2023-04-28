@@ -16,24 +16,24 @@ const Chatbot = () => {
       const vectorStoreData = await fetch('/chatbot-vectorstore.json').then((res) => res.json());
       const modelData = await fetch('/chatbot-model.json').then((res) => res.json());
       const openAIModel = new OpenAI({ ...modelData, openAIApiKey: process.env.OPENAI_API_KEY });
-
+  
       // Create an instance of OpenAIEmbeddings.
       const embeddingsModel = new OpenAIEmbeddings({ modelName: 'text-embedding-ada-002', openAIApiKey: process.env.OPENAI_API_KEY });
-      console.log('embeddingsModel:', embeddingsModel)
+  
       // Update the vectorStoreData object to include the embeddings property.
       vectorStoreData.embeddings = embeddingsModel;
-
+  
       // Create an instance of MemoryVectorStore with the updated vectorStoreData.
-      const vectorStore = new MemoryVectorStore(embeddingsModel, { data: vectorStoreData.data });
-      console.log('vectorStore:', vectorStore);
-
+      const vectorStore = new MemoryVectorStore(embeddingsModel);
+      vectorStore.memoryVectors = vectorStoreData.memoryVectors;
+  
       // Create an instance of RetrievalQAChain.
       const combineDocumentsChain = loadQARefineChain(openAIModel);
       const chainInstance = new RetrievalQAChain({
         combineDocumentsChain,
         retriever: vectorStore.asRetriever(),
       });
-
+  
       setChain(chainInstance);
     };
     loadChain();

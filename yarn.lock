@@ -2569,7 +2569,7 @@ ml-distance-euclidean@^2.0.0:
 
 ml-distance@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npmjs.org/ml-distance/-/ml-distance-4.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/ml-distance/-/ml-distance-4.0.0.tgz#197c272abea03f13e1746e59a35be4491566bfdc"
   integrity sha512-zj7+UGZpHk3uL7n79XTfGNUjIGnhLn8xVvrxYvBHvXFxo3jq1q+/UjP311hZxnLVhbxbXCjUniThX8gozjacYA==
   dependencies:
     ml-array-mean "^1.1.6"
