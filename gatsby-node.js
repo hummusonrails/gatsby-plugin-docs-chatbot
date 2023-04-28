@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const model = new OpenAI({
   type: 'openai',
-  modelName: 'gpt-3.5'
+  modelName: 'gpt-3.5-turbo'
 });
 
 const textSplitter = new MarkdownTextSplitter();

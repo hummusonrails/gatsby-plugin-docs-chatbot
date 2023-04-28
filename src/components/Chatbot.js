@@ -45,12 +45,13 @@ const Chatbot = () => {
     if (!input) return;
   
     setMessages([...messages, { type: 'user', text: input }]);
+    console.log('Sending request to Chatbot API with input:', input)
     setInput('');
   
     // Check if the chain object is defined and has a call method
     if (chain && typeof chain.call === 'function') {
       const response = await chain.call({ query: input });
-      setMessages([...messages, { type: 'user', text: input }, { type: 'bot', text: response.text }]);
+      setMessages([...messages, { type: 'user', text: input }, { type: 'bot', text: response.output_text }]);
     } else {
       console.log('Chain object is not defined or does not have a call method:', chain);
       console.log(chain.constructor.name);
