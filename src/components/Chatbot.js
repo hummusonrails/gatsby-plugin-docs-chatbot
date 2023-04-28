@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Chatbot.css';
 import { RetrievalQAChain, loadQARefineChain } from 'langchain/chains';
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai'; // Import the OpenAIEmbeddings class
+import { OpenAI } from 'langchain/llms/openai';
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { MemoryVectorStore } from 'langchain/vectorstores/memory';
 
 const Chatbot = () => {
@@ -14,13 +15,20 @@ const Chatbot = () => {
       // Load vector store data and model data from your files or server.
       const vectorStoreData = await fetch('/chatbot-vectorstore.json').then((res) => res.json());
       const modelData = await fetch('/chatbot-model.json').then((res) => res.json());
-      const openAIEmbeddings = new OpenAIEmbeddings({ ...modelData, openAIApiKey: process.env.OPENAI_API_KEY });
+      const openAIModel = new OpenAI({ ...modelData, openAIApiKey: process.env.OPENAI_API_KEY });
 
-      // Create an instance of MemoryVectorStore.
-      const vectorStore = new MemoryVectorStore({ data: vectorStoreData.data, embeddings: openAIEmbeddings });
+      // Create an instance of OpenAIEmbeddings.
+      const embeddingsModel = new OpenAIEmbeddings({ modelName: 'text-embedding-ada-002', openAIApiKey: process.env.OPENAI_API_KEY });
+      console.log('embeddingsModel:', embeddingsModel)
+      // Update the vectorStoreData object to include the embeddings property.
+      vectorStoreData.embeddings = embeddingsModel;
+
+      // Create an instance of MemoryVectorStore with the updated vectorStoreData.
+      const vectorStore = new MemoryVectorStore(embeddingsModel, { data: vectorStoreData.data });
+      console.log('vectorStore:', vectorStore);
 
       // Create an instance of RetrievalQAChain.
-      const combineDocumentsChain = loadQARefineChain(openAIEmbeddings);
+      const combineDocumentsChain = loadQARefineChain(openAIModel);
       const chainInstance = new RetrievalQAChain({
         combineDocumentsChain,
         retriever: vectorStore.asRetriever(),
