@@ -1,1 +1,5 @@
 node_modules
+chatbot-chain.json
+chatbot-model.json
+chatbot-vectorstore.json
+yarn-error.log

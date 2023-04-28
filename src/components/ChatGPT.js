@@ -3,7 +3,7 @@ import axios from 'axios';
 const chatGPT = async (message) => {
   console.log('chatGPT invoked');
 
-  const API_URL = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+  const API_URL = 'https://api.openai.com/v1/chat/completions';
   const API_KEY = process.env.OPENAI_API_KEY;
 
   if (!API_KEY) {
@@ -17,7 +17,8 @@ const chatGPT = async (message) => {
   };
 
   const data = {
-    prompt: message,
+    messages: [{"role": "user", "content": message}],
+    model: "gpt-3.5-turbo",
     max_tokens: 150,
     n: 1,
     stop: null,
@@ -28,7 +29,8 @@ const chatGPT = async (message) => {
 
   try {
     const response = await axios.post(API_URL, data, { headers });
-    const result = response.data.choices[0].text.trim();
+    console.log('Received response from ChatGPT API:', response.data)
+    const result = response.data.choices[0].message.content.trim();
     console.log('Received response from ChatGPT API:', result);
     return result;
   } catch (error) {

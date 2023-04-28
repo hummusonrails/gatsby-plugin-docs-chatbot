@@ -6,8 +6,20 @@ const { MarkdownTextSplitter } = require('langchain/text_splitter');
 const axios = require('axios');
 const fs = require('fs');
 
-const model = new OpenAI({});
+const model = new OpenAI({
+  type: 'openai',
+  modelName: 'gpt-3.5-turbo'
+});
+
 const textSplitter = new MarkdownTextSplitter();
+
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    experiments: {
+      asyncWebAssembly: true, // Enable async WebAssembly modules
+    },
+  });
+};
 
 exports.createPages = async ({ actions, graphql }, pluginOptions) => {
   const { createPage } = actions;
@@ -86,5 +98,11 @@ exports.createPages = async ({ actions, graphql }, pluginOptions) => {
   });
 
   // Save the chain to a JSON file
-  fs.writeFileSync('chatbot-chain.json', JSON.stringify(chain));
+  fs.writeFileSync('public/chatbot-chain.json', JSON.stringify(chain));
+
+  // Save the vector store data to a JSON file
+  fs.writeFileSync('public/chatbot-vectorstore.json', JSON.stringify(vectorStore));
+
+  // Save the model data to a JSON file
+  fs.writeFileSync('public/chatbot-model.json', JSON.stringify(model));
 };
