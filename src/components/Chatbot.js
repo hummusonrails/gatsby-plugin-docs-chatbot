@@ -28,7 +28,12 @@ const Chatbot = () => {
       vectorStore.memoryVectors = vectorStoreData.memoryVectors;
   
       // Create an instance of RetrievalQAChain.
-      const combineDocumentsChain = loadQARefineChain(openAIModel);
+      const combineDocumentsChain = loadQARefineChain(openAIModel, {
+        documentPrompt: 'Please provide a concise and helpful answer to the following question, if the question has already been asked just answer it again just as helpfully as before, and do not mention anything about refinement of context whatsoever: {question}\nAnswer: {existing_answer}',
+        documentVariableName: 'page_content',
+        initialResponseName: 'existing_answer',
+      });
+      
       const chainInstance = new RetrievalQAChain({
         combineDocumentsChain,
         retriever: vectorStore.asRetriever(),
